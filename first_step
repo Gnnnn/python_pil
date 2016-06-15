@@ -1,0 +1,25 @@
+from Image import *
+from math import *
+def split_pic(im1):
+	w,h = im1.size
+	if w <= h*sqrt(3)/2:
+		box = (0,int((h - 2*sqrt(3)*w/3)/2.0),w,int(2*sqrt(3)*w/3+(h - 2*sqrt(3)*w/3)/2.0))
+	else:
+		box = (int((w - sqrt(3)*h/2)/2.0),0,int(sqrt(3)*h/2+(w - sqrt(3)*h/2)/2.0),h)
+	new_im1 = im1.crop(box)
+	return new_im1
+def split_hexagon(im1):
+	im1 = split_pic(im1)
+	w,h = im1.size
+	for x in range(w):
+		for y in range(h):
+			if ((x - sqrt(3)*y - h*sqrt(3)/4) >= 0)or ((x + sqrt(3)*y - h*sqrt(3)/4) <= 0)\
+			or ((y - x*sqrt(3)/3- h*3.0/4) >= 0) or ((y + sqrt(3)*x/3 - h*5.0/4) >= 0):
+				im1.putpixel([x,y],(255,255,255))
+	return im1
+def main():
+	im = open('earth_big.JPG')
+	new_im = split_hexagon(im)
+	new_im.show()
+if __name__ == '__main__':
+	main()
